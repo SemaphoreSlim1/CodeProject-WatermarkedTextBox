@@ -1,0 +1,45 @@
+﻿<Window x:Class="WatermarkExample.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        DataContext="{Binding Source={StaticResource Locator}, Path=Main}"
+        Title="MainWindow" Height="350" Width="525">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="10" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="200" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        
+        <Label Content="This is a watermarked textbox" />
+<Grid x:Name="WatermarkWrapper" Grid.Row="0" Grid.Column="1">
+    <TextBox x:Name="WaterMarkedTextBox" Text="{Binding Text, FallbackValue='Hello World'}" />
+    <TextBlock IsHitTestVisible="False" Text="{Binding WatermarkText}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0" Foreground="DarkGray">
+        <TextBlock.Style>
+            <Style TargetType="{x:Type TextBlock}">
+                <Setter Property="Visibility" Value="Collapsed" />
+                <Style.Triggers>
+                    <MultiDataTrigger>
+                        <MultiDataTrigger.Conditions>
+                            <Condition Binding="{Binding Text}" Value="" />
+                            <Condition Binding="{Binding ElementName=WaterMarkedTextBox, Path=IsKeyboardFocused}" Value="False" />
+                        </MultiDataTrigger.Conditions>
+                        <MultiDataTrigger.Setters>
+                            <Setter Property="Visibility" Value="Visible" />
+                        </MultiDataTrigger.Setters>
+                    </MultiDataTrigger>
+                </Style.Triggers>
+            </Style>
+        </TextBlock.Style>
+    </TextBlock>
+</Grid>
+        <Label Content="This is not a watermarked textbox" Grid.Row="2" Grid.Column="0" />
+        <TextBox Grid.Row="2" Grid.Column="1" />
+        
+    </Grid>
+</Window>
